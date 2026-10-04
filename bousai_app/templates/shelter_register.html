@@ -6,17 +6,34 @@
 
 <!-- 成功・エラーメッセージ表示 -->
 {% if success %}
-  <p>{{ message }}</p>
+  <p class="form-message success-message" role="status">{{ message }}</p>
+  <p><a href="{{ url_for('all_shelters') }}">登録済み避難所一覧を見る</a></p>
 {% endif %}
 
 {% if error %}
-  <p>{{ message }}</p>
+  <p class="form-message error-message" role="alert">{{ message }}</p>
 {% endif %}
 
 <form method="POST">
   <p>
     <label for="name">避難所名（必須）</label><br>
-    <input type="text" id="name" name="name">
+    <input type="text" id="name" name="name" value="{{ form_data.get('name', '') if form_data else '' }}" required>
+  </p>
+  <p>
+    <label for="address">住所（必須）</label><br>
+    <input type="text" id="address" name="address" value="{{ form_data.get('address', '') if form_data else '' }}" autocomplete="street-address" required>
+  </p>
+  <p>
+    <label for="capacity">収容人数（必須）</label><br>
+    <input type="number" id="capacity" name="capacity" value="{{ form_data.get('capacity', '') if form_data else '' }}" min="0" step="1" inputmode="numeric" required>
+  </p>
+  <p>
+    <label for="contact">連絡先</label><br>
+    <input type="tel" id="contact" name="contact" value="{{ form_data.get('contact', '') if form_data else '' }}" autocomplete="tel">
+  </p>
+  <p>
+    <label for="notes">備考</label><br>
+    <textarea id="notes" name="notes" rows="4">{{ form_data.get('notes', '') if form_data else '' }}</textarea>
   </p>
   <p><button type="submit">登録</button></p>
 </form>

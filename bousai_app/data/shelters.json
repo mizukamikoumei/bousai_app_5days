@@ -18,5 +18,21 @@
   {
     "id": 7,
     "name": "NTT"
+  },
+  {
+    "id": 8,
+    "name": "NTT",
+    "address": "あ",
+    "capacity": 1,
+    "contact": "",
+    "notes": ""
+  },
+  {
+    "id": 9,
+    "name": "NTT",
+    "address": "あ",
+    "capacity": 1,
+    "contact": "",
+    "notes": ""
   }
 ]

@@ -1,16 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>検索結果</h2>
+<h2>{{ page_title }}</h2>
+<p class="result-count">該当件数：{{ result_count }}件{% if district %}（地区：{{ district }}）{% endif %}</p>
 
 {% if results %}
-  <ul>
+  <div class="table-scroll">
+  <table class="shelter-table">
+    <thead>
+      <tr>
+        <th scope="col">避難所名</th>
+        <th scope="col">住所</th>
+        <th scope="col">収容人数</th>
+        <th scope="col">連絡先</th>
+        <th scope="col">備考</th>
+      </tr>
+    </thead>
+    <tbody>
     {% for shelter in results %}
-    <li>{{ shelter.name }}</li>
+      <tr>
+        <td>{{ shelter.get('name') or '未登録' }}</td>
+        <td>{{ shelter.get('address') or '未登録' }}</td>
+        <td>{{ shelter.get('capacity', '未登録') }}</td>
+        <td>{{ shelter.get('contact') or '未登録' }}</td>
+        <td class="shelter-notes">{{ shelter.get('notes') or '未登録' }}</td>
+      </tr>
     {% endfor %}
-  </ul>
+    </tbody>
+  </table>
+  </div>
 {% else %}
-  <p>該当する避難所が見つかりませんでした</p>
+  <p>{{ empty_message }}</p>
 {% endif %}
 
 <p>

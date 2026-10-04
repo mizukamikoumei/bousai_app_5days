@@ -150,7 +150,15 @@ def format_report_time(iso_str):
 
 def filter_shelters(district=None):
     """district 指定があれば一致する避難所のみ、なければ全件を返す"""
-    return [s for s in shelters if not district or s.get('district') == district]
+    if not district:
+        return shelters
+
+    query = district.strip()
+    return [
+        shelter for shelter in shelters
+        if shelter.get('district') == query
+        or query in (shelter.get('address') or '')
+    ]
 
 
 def parse_area_warnings(warning_data):
@@ -292,25 +300,54 @@ def logout():
 def shelter_register():
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
+        form_data = {
+            'name': name,
+            'address': request.form.get('address', '').strip(),
+            'capacity': request.form.get('capacity', '').strip(),
+            'contact': request.form.get('contact', '').strip(),
+            'notes': request.form.get('notes', '').strip(),
+        }
 
         if not name:
             return render_template(
                 'shelter_register.html',
                 error=True,
-                message='避難所名を入力してください。'
+                message='避難所名を入力してください。',
+                form_data=form_data
+            )
+
+        if not form_data['address']:
+            return render_template(
+                'shelter_register.html',
+                error=True,
+                message='住所を入力してください。',
+                form_data=form_data
+            )
+
+        capacity = form_data['capacity']
+        if not capacity or not capacity.isascii() or not capacity.isdecimal():
+            return render_template(
+                'shelter_register.html',
+                error=True,
+                message='収容人数は半角数字で入力してください。',
+                form_data=form_data
             )
 
         new_id = max((s.get('id', 0) for s in shelters), default=0) + 1
         shelters.append({
             'id': new_id,
-            'name': name
+            'name': name,
+            'address': form_data['address'],
+            'capacity': int(capacity),
+            'contact': form_data['contact'],
+            'notes': form_data['notes']
         })
         save_shelters()
 
         return render_template(
             'shelter_register.html',
             success=True,
-            message=f'避難所「{name}」を登録しました。'
+            message=f'避難所「{name}」を登録しました。登録日時：{get_japan_time()}'
         )
 
     return render_template('shelter_register.html')
@@ -323,7 +360,14 @@ def shelter_search():
 # 全施設一覧ページ
 @app.route('/all_shelters')
 def all_shelters():
-    return render_template('search_results.html', results=shelters)
+    return render_template(
+        'search_results.html',
+        results=shelters,
+        result_count=len(shelters),
+        district='',
+        page_title='登録済み避難所一覧',
+        empty_message='登録された避難所はありません。'
+    )
 
 
 # 指示ボード：住民向けの指示を一覧で確認する
@@ -336,8 +380,16 @@ def board():
 # 検索結果ページ：templates/search_results.html を返す
 @app.route('/search_results')
 def search_results():
-    results = filter_shelters(request.args.get('district'))
-    return render_template('search_results.html', results=results)
+    district = request.args.get('district', '').strip()
+    results = filter_shelters(district)
+    return render_template(
+        'search_results.html',
+        results=results,
+        result_count=len(results),
+        district=district,
+        page_title='検索結果',
+        empty_message='該当する避難所が見つかりませんでした。'
+    )
 
 # JSON API：/shelters?district=地区名
 @app.route('/shelters', methods=['GET'])

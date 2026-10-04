@@ -18,6 +18,138 @@ button {
   font: inherit;
 }
 
+.form-message {
+  padding: 10px 12px;
+  border-left: 4px solid;
+  border-radius: 4px;
+}
+
+.success-message {
+  color: #185c2b;
+  background: #e9f6ed;
+  border-color: #338a4e;
+}
+
+.error-message {
+  color: #922b21;
+  background: #fff0ef;
+  border-color: #cf4235;
+}
+
+main.page-shell:has(form input[name="name"]) > h2 {
+  margin: 0 0 8px;
+  color: #1b5f92;
+  font-size: 24px;
+}
+
+main.page-shell:has(form input[name="name"]) > p:not(.form-message) {
+  margin: 0 0 18px;
+  color: #526578;
+}
+
+main.page-shell:has(form input[name="name"]) > .form-message {
+  margin: 18px 0 12px;
+}
+
+main.page-shell > form:has(input[name="name"]) {
+  max-width: 720px;
+  margin: 20px 0 0;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #d8e0e7;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(28, 41, 55, 0.05);
+}
+
+main.page-shell > form:has(input[name="name"]) p {
+  margin: 0 0 18px;
+}
+
+main.page-shell > form:has(input[name="name"]) label {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #263e52;
+  font-weight: 700;
+}
+
+main.page-shell > form:has(input[name="name"]) input,
+main.page-shell > form:has(input[name="name"]) textarea {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: #1f2d3d;
+  background: #ffffff;
+  border: 1px solid #aebdca;
+  border-radius: 6px;
+  font: inherit;
+}
+
+main.page-shell > form:has(input[name="name"]) textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+main.page-shell > form:has(input[name="name"]) input:focus,
+main.page-shell > form:has(input[name="name"]) textarea:focus {
+  border-color: #1674ad;
+  outline: 3px solid rgba(22, 116, 173, 0.18);
+}
+
+main.page-shell > form:has(input[name="name"]) button {
+  width: 100%;
+  min-height: 48px;
+  color: #ffffff;
+  background: #0b5c91;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+main.page-shell > form:has(input[name="name"]) button:hover {
+  background: #084875;
+}
+
+main.page-shell > form:has(input[name="name"]) button:focus-visible {
+  outline: 3px solid rgba(22, 116, 173, 0.35);
+  outline-offset: 2px;
+}
+
+main.page-shell > form:has(input[name="name"]) p:last-child {
+  margin-bottom: 0;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.shelter-table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.shelter-table th,
+.shelter-table td {
+  padding: 10px 12px;
+  border: 1px solid #d8e0e7;
+  text-align: left;
+  vertical-align: top;
+}
+
+.shelter-table th {
+  background: #e9f1f7;
+  white-space: nowrap;
+}
+
+.shelter-notes {
+  min-width: 180px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .app-header {
   height: 72px;
   background: linear-gradient(90deg, #0a4479 0%, #0c3e75 100%);
@@ -34,6 +166,16 @@ button {
   font-size: 30px;
   letter-spacing: 0.02em;
   line-height: 1;
+}
+
+.header-register-link {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.header-register-link:hover {
+  text-decoration: underline;
 }
 
 .menu-button {
@@ -223,6 +365,10 @@ button {
 @media (max-width: 700px) {
   .app-title {
     font-size: 24px;
+  }
+
+  main.page-shell > form:has(input[name="name"]) {
+    padding: 18px 14px;
   }
 
   .map-frame {
